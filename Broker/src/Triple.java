@@ -1,4 +1,4 @@
-// Triple serves as a way to store a peer's IP Address, port number,
+// Triple serves as a way to store a peer'name IP Address, port number,
 // and user name for the P2P Transfer Program
 
 public class Triple {
@@ -6,10 +6,10 @@ public class Triple {
 	private int portNum;
 	private String name;
 
-	public Triple(String ip, int p, String s){
+	public Triple(String ip, int portNum, String name){
 		this.setIP(ip);
-		this.setPortNum(p);
-		this.setName(s);
+		this.setPortNum(portNum);
+		this.setName(name);
 	}
 
 	public String getIPAddress() {
