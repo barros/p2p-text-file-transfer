@@ -1,7 +1,7 @@
 /**
  * 	This simulates a very simple version of FTP protocol. A peer requests the name
  *	of the file and the contributing peer sends the contents. The name of the file is
- *	passed to the program as the command argument. 
+ *	passed to the program as the command argument.
  */
 
 import java.net.*;
@@ -18,9 +18,9 @@ public class Connection {
 
 	Connection(String server, int port, String fileName) throws IOException, UnknownHostException {
 		this.fileName = fileName;
-		sock = new Socket(server, port);
-		sendStream = sock.getOutputStream();
-		recvStream = sock.getInputStream();
+		this.sock = new Socket(server, port);
+		this.sendStream = sock.getOutputStream();
+		this.recvStream = sock.getInputStream();
 	}
 
 	public void makeRequest(){
@@ -35,11 +35,11 @@ public class Connection {
 		} catch (IOException ex) {
 			System.err.println("IOException in sendRequest (Connection.java)");
 		}
-	} 
+	}
 
 	public void getResponse() throws IOException {
 		try {
-			int dataSize = 9999999; 
+			int dataSize = 9999999;
 			byte[] recvBuff = new byte[dataSize];
 			recvStream.read(recvBuff, 0, dataSize);
 			response = new String(recvBuff, 0, dataSize);

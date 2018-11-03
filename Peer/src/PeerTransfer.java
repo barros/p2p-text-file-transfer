@@ -10,7 +10,7 @@ public class PeerTransfer implements Runnable{
 	private ServerSocket peerSocket = null;
 
 	InputStream recvStream;
-	OutputStream sendStream; 
+	OutputStream sendStream;
 	String request;
 	String response;
 
@@ -22,12 +22,12 @@ public class PeerTransfer implements Runnable{
 		try{
 			while (true){
 				Socket s = peerSocket.accept();
-				recvStream = s.getInputStream();  
+				recvStream = s.getInputStream();
 				sendStream = s.getOutputStream();
 				getRequest();
 				process();
 				sendResponse();
-				close(s);    
+				close(s);
 				System.out.println("(a peer has disconnected)");
 			}
 		} catch (IOException e){
@@ -35,45 +35,45 @@ public class PeerTransfer implements Runnable{
 		}
 	}
 
-	private void getRequest(){   
+	private void getRequest(){
 		try{
 			int dataSize;
 			while ((dataSize = recvStream.available()) == 0);
 			byte[] recvBuff = new byte[dataSize];
 			recvStream.read (recvBuff, 0, dataSize);
-			request = new String (recvBuff, 0, dataSize);   
+			request = new String (recvBuff, 0, dataSize);
 		} catch (IOException ex){
-			System.err.println ("IOException in getRequest (PeerTransfer.java)");  
+			System.err.println ("IOException in getRequest (PeerTransfer.java)");
 		}
-	}  
+	}
 
 	private void process(){
-		Processor processor = new Processor();
-		response = processor.getContents(request);	
-	}  
+		ServerProcessor processor = new ServerProcessor();
+		response = processor.getContents(request);
+	}
 
-	private void sendResponse(){  
+	private void sendResponse(){
 		try{
 			if (response == null){
 				byte[] sendBuff = new byte[100];
 				sendBuff = "\nUnfortunately, the file could not be found in the contributor's system.".getBytes();
-				sendStream.write (sendBuff, 0, sendBuff.length); 
+				sendStream.write (sendBuff, 0, sendBuff.length);
 				return;
 			}
 			byte[] sendBuff = new byte [response.length()];
 			sendBuff = response.getBytes();
-			sendStream.write (sendBuff, 0, sendBuff.length);  
+			sendStream.write (sendBuff, 0, sendBuff.length);
 			sendStream.flush();
 		} catch (IOException ex){
-			System.err.println ("IOException in sendResponse (PeerTransfer.java)");   
+			System.err.println ("IOException in sendResponse (PeerTransfer.java)");
 		}
 	}
 
-	private void close (Socket s){  
+	private void close (Socket s){
 		try{
-			recvStream.close();                  
+			recvStream.close();
 			sendStream.close();
-			s.close();  
+			s.close();
 		} catch (IOException ex){
 			System.err.println ("IOException in close (PeerTransfer.java)");
 		}
